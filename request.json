@@ -1,0 +1,170 @@
+{
+    "requestType": "Contract",
+    "internalIds": {
+        "cisContractId": "PND20240320T0255235523552355235523",
+        "cisAddendumId": "",
+        "contractId": ""
+    },
+    "insuranceContract": {
+        "contractNumber": "015523",
+        "closingDate": "2023-08-02T09:00:01",
+        "effectiveDate": "2023-08-03T10:00:01",
+        "endDate": "2024-08-02T18:31:42",
+        "revisionDate": "2023-08-02T08:00:05Z",
+        "addendumType": "",
+        "utilisationPeriods": [
+            {
+                "beginPeriod": "2023-08-03T18:31:42",
+                "endPeriod": "2024-08-02T18:31:42"
+            }
+        ],
+        "parkVehiclesCount": 1,
+        "totalPremiumAmount": 123456.78,
+        "deltaPremiumAmount": null,
+        "paymentProcedure": 1
+    },
+    "object": {
+        "vehicle": {
+      "rentingVehicle": false,
+      "purposeCode": "1",
+      "additionalContractConditions": [
+        "ТС используется для целей, не связанных с осуществлением Водителями предпринимательской деятельности"
+      ],
+      "objectParts": null,
+      "risksByInsuranceKind": [
+        {
+          "accountingGroup": "6",
+          "insuranceKind": "14",
+          "risks": [
+            {
+              "deductible": {
+                "descriptionConditions": "string",
+                "percent": "",
+                "sum": 123456.78,
+                "type": "1"
+              },
+              "insuranceSum": 1234599,
+              "insuranceSumType": "1",
+              "premiumAmount": 123456.78,
+              "type": [
+                "4"
+              ]
+            }
+          ]
+        },
+        {
+          "accountingGroup": "7",
+          "insuranceKind": "6",
+          "risks": [
+            {
+              "deductible": {
+                "descriptionConditions": "string",
+                "percent": "",
+                "sum": 123456.78,
+                "type": "1"
+              },
+              "insuranceSum": 1234599,
+              "insuranceSumType": "1",
+              "premiumAmount": 123456.78,
+              "type": [
+                "1"
+              ]
+            }
+          ]
+        }
+      ],
+            "vehicleDoc": {
+                "countryCode": "643",
+                "docType": "30",
+                "docSeries": "12HE",
+                "docNumber": "025523",
+                "issueDate": "2023-02-20",
+                "licensePlate": "О832РУ163",
+                "vin": "X4XWZ239071H85100",
+                "bodyNumber": "X4XWZ239071H85100",
+                "chassisNumber": "X4XWZ239071H85100",
+                "vehicleType": "03",
+                "vehicleCategory": "04",
+                "makeModel": "",
+                "writtenMake": "Mercedes-Benz",
+                "writtenModel": "E55AMG",
+                "productionYear": "2015",
+                "powerHp": 180.5,
+                "maxAllowedWeight": 3450,
+                "passengerCapacity": 8,
+                "engineType": "2"
+            }
+        },
+        "parties": [
+            {
+                "partyType": "Person",
+                "role": [
+                    "DRIVER",
+                    "OWNER",
+                    "BENEFICIARY"
+                ],
+                "person": {
+                    "inn": "077170836520",
+                "snils": "08043097649",
+                "phone": "87519056634",
+                "email": "87519056634@gmail.com",
+                    "idCard": {
+                      "countryCode": "643",
+                        "docType": "12",
+                         "docSeries": "5523",
+                    "docNumber": "552323",
+                        "issueDate": "2021-01-01",
+                       "lastName": "ИПИеЧЮе",
+                    "firstName": "ЫИгТ",
+                    "middleName": "хгМУщович",
+                       "birthDate": "2000-03-20",
+                    "address": "г. Москва, ул. гпсьмЕщэпчФИнбтЩЙЖфоЗШБТпРшЕУч",
+                        "addressId": "1e686121-4c03-4cea-a8c6-b580c80f0ebb",
+                        "confirmationDocuments": null
+                    },
+                    "driverLicense": {
+                        "countryCode": "643",
+                        "docType": "20",
+                       "docSeries": "2949",
+                    "docNumber": "322318",
+                        "issueDate": "2017-01-01",
+                        
+                       "lastName": "ИПИеЧЮе",
+                    "firstName": "ЫИгТ",
+                    "middleName": "хгМУщович",
+                        "birthDate": "2000-03-20",
+                        "confirmationDocuments": null
+                    }
+                }
+            }
+        ]
+    },
+    "parties": [
+        {
+            "partyType": "Person",
+            "role": [
+                "PolicyHolder"
+            ],
+            "person": {
+                  "inn": "077170836520",
+                "snils": "08043097649",
+                "phone": "87519056634",
+                "email": "87519056634@gmail.com",
+                "idCard": {
+                  "countryCode": "643",
+                        "docType": "12",
+                         "docSeries": "5523",
+                    "docNumber": "552323",
+                        "issueDate": "2021-01-01",
+                       "lastName": "ИПИеЧЮе",
+                    "firstName": "ЫИгТ",
+                    "middleName": "хгМУщович",
+                       "birthDate": "2000-03-20",
+                    "address": "г. Москва, ул. гпсьмЕщэпчФИнбтЩЙЖфоЗШБТпРшЕУч",
+                        "addressId": "1e686121-4c03-4cea-a8c6-b580c80f0ebb",
+                        "confirmationDocuments": null
+                }
+            }
+        }
+    ]
+}
