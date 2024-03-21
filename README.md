@@ -1,8 +1,9 @@
 # Пример подписания электронных сообщений и проверки подписи на основе отправки договора
 
 > [!CAUTION]
-> Не предназначено для использования на проде
-> Это просто пример на замену постман-коллекции
+> Не предназначено для использования на проде.
+> 
+> Это просто пример на замену постман-коллекции.
 
 
 ### Используемые библиотеки
@@ -32,8 +33,8 @@ pip install requests
 - имя пользователя и пароль АИС
 - идентификатор своего сертификата
 - значение приватного ключа
-можно посмотреть командой, если у вас ключ в PEM формате 
-`openssl pkey -engine gost -inform PEM -in key.pem -text`
+(можно посмотреть командой, если у вас ключ в PEM формате )
+```openssl pkey -engine gost -inform PEM -in key.pem -text``` 
 #### Запуск скрипта
 ```shell
 python main.py
@@ -67,3 +68,23 @@ RESPONSE SIGNATURE: valid
 ```
 
 </details>
+
+## Проверка создание и проверка подписи используя OpenSSL с gost
+#### Подписание
+Допустим, у нас есть приватный ключ `key.pem`
+Мы можем подписать содержимое файла следующим образом
+```shell
+echo 123 > test.txt  # Сгенерируем простой файл
+openssl dgst -streebog256 -sign key.pem -out sign.bin test.txt  # Подпишем test.txt и положим подпись в файл sign.bin в бинарном виде
+openssl base64 -in sign.bin > sign.b64  # Преобразуем подпись в формат base64
+```
+#### Проверка подписи
+Допустим, у нас есть публичный сертификат `cert.pem`, подпись `sign.b64` и подписываемые данные `test.txt`
+Проверить можно так
+```shell
+openssl x509 -engine gost -in cert.pem -pubkey -noout > publickey.pem  # Достаним публичный ключ из сертификата
+openssl base64 -d -in sign.b64 -out sign_check.bin  # Преобразуем из base64 в бинарный формат
+openssl dgst -streebog256 -verify publickey.pem -signature sign_check.bin test.txt  # Проверям подпись
+# В резултате должно получиться
+# Verified OK
+```
