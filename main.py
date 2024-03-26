@@ -17,17 +17,16 @@ class CustomSession(requests.Session):
         kwargs2.pop('allow_redirects', None)
         req = requests.Request(method, url, **kwargs2)
         r = req.prepare()
-        self.before_request(r.body, method, url)
+        self.before_request(r.body, r.path_url)
 
         return super().request(method, url, **kwargs)
 
-    def before_request(self, body, method, url):
+    def before_request(self, body, path_url):
         # Формируем подпись перед каждым запросом
-        url_contracts = url.replace(base_url, "")
         timestamp = ts()
         salt = gen_uuid()
 
-        bts = bytes(salt + timestamp + url_contracts, "utf-8")
+        bts = bytes(salt + timestamp + path_url, "utf-8")
         bin_data = body + bts if body else bts
 
         signature = sign_data(bin_data)
