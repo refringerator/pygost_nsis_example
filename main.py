@@ -8,6 +8,36 @@ from utils import ts, gen_uuid, pr
 requests.packages.urllib3.disable_warnings()
 
 
+class CustomSession(requests.Session):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def request(self, method, url, **kwargs):
+        kwargs2 = kwargs
+        kwargs2.pop('allow_redirects', None)
+        req = requests.Request(method, url, **kwargs2)
+        r = req.prepare()
+        self.before_request(r.body, method, url)
+
+        return super().request(method, url, **kwargs)
+
+    def before_request(self, body, method, url):
+        # Формируем подпись перед каждым запросом
+        url_contracts = url.replace(base_url, "")
+        timestamp = ts()
+        salt = gen_uuid()
+
+        bts = bytes(salt + timestamp + url_contracts, "utf-8")
+        bin_data = body + bts if body else bts
+
+        signature = sign_data(bin_data)
+
+        self.headers["X-Inssys-Salt"] = salt
+        self.headers["X-Inssys-Timestamp"] = timestamp
+        self.headers["X-Inssys-Signature"] = signature
+        self.headers["X-Inssys-Certificate-Id"] = cert_id
+
+
 def generate_contract() -> bytes:
     # Генерируем тело запроса договора
     cisContractId = gen_uuid()
@@ -35,16 +65,7 @@ def check_response_signature(headers, body: bytes):
 
 
 def main():
-    # Формируем подпись
-    bin_request_body = generate_contract()
-    url_contracts = "/api/policy/kasko/v1/contracts"
-    timestamp = ts()
-    salt = gen_uuid()
-
-    bin_data = bin_request_body + bytes(salt + timestamp + url_contracts, "utf-8")
-    signature = sign_data(bin_data)
-
-    with requests.Session() as session:
+    with CustomSession() as session:
         session.verify = False
         session.proxies = proxies
         session.headers["Content-Type"] = "application/json"
@@ -57,12 +78,8 @@ def main():
         # pr('LOGIN\n', resp.text);
 
         # Отправка договора
-        session.headers["X-Inssys-Salt"] = salt
-        session.headers["X-Inssys-Timestamp"] = timestamp
-        session.headers["X-Inssys-Signature"] = signature
-        session.headers["X-Inssys-Certificate-Id"] = cert_id
-
-        resp = session.post(url=base_url + url_contracts, data=bin_request_body)
+        url_contracts = "/api/policy/kasko/v1/contracts"
+        resp = session.post(url=base_url + url_contracts, data=generate_contract())
         pr("CONTRACT RESPONSE\n", resp.status_code, resp.reason, "\n", resp.text)
 
         # Проверка полученной подписи
@@ -75,15 +92,6 @@ def main():
 
         # Проверка статуса отправленного договора
         url_part = f"/api/policy/kasko/v1/contracts?requestId={requestId}"
-        timestamp = ts()
-        salt = gen_uuid()
-        signature = sign_data(bytes(salt + timestamp + url_part, "utf-8"))
-
-        session.headers["X-Inssys-Salt"] = salt
-        session.headers["X-Inssys-Timestamp"] = timestamp
-        session.headers["X-Inssys-Signature"] = signature
-        session.headers["X-Inssys-Certificate-Id"] = cert_id
-
         resp = session.get(url=base_url + url_part)
         pr("RESULT RESPONSE\n", resp.status_code, resp.reason, "\n", resp.text)
 
